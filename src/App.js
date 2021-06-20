@@ -1,4 +1,4 @@
-import { PureComponent } from "react";
+import { useRef, useState } from "react";
 
 import Game from "mykulyak-2048";
 
@@ -7,62 +7,40 @@ import Header from "./Header";
 import CommandBar from "./CommandBar";
 import Board from "./Board";
 
-export default class App extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.game = new Game(4, 1);
-    this.state = {
-      score: 0,
-      bestScore: 0,
-      step: 0,
-      board: this.game.boardData(),
-    };
-  }
+export default function App() {
+  const game = useRef(new Game(4, 1));
+  const [score, setScore] = useState(0);
+  const [bestScore, setBestScore] = useState(0);
+  const [board, setBoard] = useState(game.current.boardData());
 
-  handleNewGame = () => {
-    this.setState({
-      step: 0,
-      score: 0,
-      bestScore: 0,
-      board: [...this.game.boardData()],
-    });
+  const handleNewGame = () => {
+    game.current.reset();
+    setScore(0);
+    setBoard([...game.current.boardData()]);
   };
 
-  handleReset = () => {
-    this.game.reset();
-    this.setState({
-      step: this.game.step,
-      score: 0,
-      bestScore: 0,
-      board: this.game.boardData(),
-    });
+  const handleReset = () => {
+    handleNewGame();
+    setBestScore(0);
   };
 
-  handleKeyUp = (event) => {
+  const handleKeyUp = (event) => {
     const directionMap = {
       ArrowLeft: 8,
       ArrowRight: 4,
       ArrowUp: 1,
       ArrowDown: 2,
     };
-    this.game.slide(directionMap[event.key]);
-    this.setState({
-      step: this.game.step,
-      score: this.game.score,
-      bestScore: 0,
-      board: this.game.boardData(),
-    });
+    game.current.slide(directionMap[event.key]);
+    setScore(game.current.score);
+    setBoard(game.current.boardData());
   };
 
-  render() {
-    const { score, bestScore, board } = this.state;
-
-    return (
-      <div className="app">
-        <Header score={score} bestScore={bestScore} />
-        <CommandBar onNewGame={this.handleNewGame} onReset={this.handleReset} />
-        <Board board={board} onSlide={this.handleKeyUp} />
-      </div>
-    );
-  }
+  return (
+    <div className="app">
+      <Header score={score} bestScore={bestScore} />
+      <CommandBar onNewGame={handleNewGame} onReset={handleReset} />
+      <Board board={board} onSlide={handleKeyUp} />
+    </div>
+  );
 }
