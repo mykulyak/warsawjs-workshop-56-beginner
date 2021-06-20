@@ -14,6 +14,10 @@ Utwórz projekt za pomocą CRA na podstawie domyślnego szablonu. Odpowiednie po
 
 Po wykonaniu tych powyzszych czynności, wykonaj polecenie `npm start` z poziomu katalogu projektu. Powinieneś zobaczyć aplikację w nowej zakładce przeglądarki.
 
+## Krok N - własny hook
+
+Teraz napiszemy własny hook `useGame(x, y) => { score, cells, newGame, handleKey }`.
+
 ## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
