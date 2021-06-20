@@ -1,6 +1,6 @@
 import { PureComponent } from "react";
 
-import Game from "@mykulyak/2048";
+import Game from "mykulyak-2048";
 
 import "./App.css";
 
